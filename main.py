@@ -57,7 +57,7 @@ button_pressed = False
 debounce_time = 200  # in milliseconds
 last_press_time = 0  # tracks last valid press time
 
-# Example function to handle button press
+# Function to handle button press
 def handle_button():
     global patternSelected
     if patternSelected < 15:
