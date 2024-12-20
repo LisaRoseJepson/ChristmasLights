@@ -54,8 +54,10 @@ turquoise = 236, 27, 236
 
 pattern4List = [blue, turquoise, green, gold, red, darkpurple]
 pattern5List = [blue, green, red, gold]
+count = 0
+ledBrightness = []
 
-numPatterns = 17
+numPatterns = 19
 patternSelected = 14
 speed = 0.5
 
@@ -85,9 +87,8 @@ def on_button_press(_):
 # Attach the interrupt to the button pin
 button.irq(trigger=Pin.IRQ_FALLING, handler=on_button_press)
 
-def pattern1(colour1 = green, colour2 = red):
-    
-    # Two colour chasing    
+def pattern1(colour1 = green, colour2 = red): # Two colour chasing
+        
     for led in range(num_leds):
         if led%2 == 0:
             strand[led] = (colour1)
@@ -108,8 +109,8 @@ def pattern1(colour1 = green, colour2 = red):
             
     time.sleep(speed)
 
-def pattern2(speed):
-    # random twinkles
+def pattern2(speed): # random twinkles
+    
     for led in range(num_leds):
         
         r = random.randint(0,255)
@@ -121,7 +122,7 @@ def pattern2(speed):
         
     time.sleep(speed)
 
-def pattern3(): 
+def pattern3(): # random colour chaser
   
     r = random.randint(0, 255)
     g = random.randint(0, 255)
@@ -130,7 +131,6 @@ def pattern3():
     # Then iterate over 15 leds
     for led in range(num_leds):
         
-        # Set each LED in the range to red
         strand[led] = (r, g, b)
         
         # Delay - the speed of the chaser
@@ -139,7 +139,7 @@ def pattern3():
         # Send the data to the strip
         strand.write()
         
-def pattern4():
+def pattern4(): # 6 colour block chaser
        
     if num_leds == 66:
         for led in range(num_leds):
@@ -171,7 +171,7 @@ def pattern4():
     strand.write()
     time.sleep(speed)
     
-def pattern5():
+def pattern5(): # RGBY chaser
     
     for led in range(num_leds):
 
@@ -186,6 +186,63 @@ def pattern5():
                 
     strand.write()
     time.sleep(speed)
+    
+def pattern6(): # RGBY twinkles
+    
+    brightnessChoices = [0.1, 1] # 10% or 100% brightness
+    
+    for led in range(num_leds):
+
+        if led % 4 == 0:
+            base_colour = pattern5List[0]
+        elif led % 3 == 0:
+            base_colour = pattern5List[1]
+        elif led % 2 == 0:
+            base_colour = pattern5List[2]
+        else:
+            base_colour = pattern5List[3]
+
+        # Randomly chooose brightness
+        brightness = brightnessChoices[random.randint(0, 1)] 
+        r = int(base_colour[0] * brightness)
+        g = int(base_colour[1] * brightness)
+        b = int(base_colour[2] * brightness)
+
+        strand[led] = (r, g, b)
+
+    strand.write()
+    time.sleep(speed*2)
+    
+def pattern7(count): # RGBY twinkles - prevents being bright or dim more than two times running
+       
+    brightnessChoices = [0.1, 1] # 10% or 100% brightness
+    global ledBrightness
+    
+    # Update brightness values based on count
+    if count%2 == 0:
+        ledBrightness = [brightnessChoices[random.randint(0, 1)] for _ in range(num_leds)]
+    else:
+        ledBrightness = [0.1 if item == 1 else 1 for item in ledBrightness]
+
+    for led in range(num_leds):
+        if led % 4 == 0:
+            base_colour = pattern5List[0]
+        elif led % 3 == 0:
+            base_colour = pattern5List[1]
+        elif led % 2 == 0:
+            base_colour = pattern5List[2]
+        else:
+            base_colour = pattern5List[3]
+
+        r = int(base_colour[0] * ledBrightness[led])
+        g = int(base_colour[1] * ledBrightness[led])
+        b = int(base_colour[2] * ledBrightness[led])
+
+        strand[led] = (r, g, b)
+
+    strand.write()
+    time.sleep(speed*2)
+    
      
 while True:
     
@@ -233,6 +290,14 @@ while True:
     elif patternSelected <= 16:
         pattern5()
         pattern5List.insert(0, pattern5List.pop(-1))
+    elif patternSelected <= 17:
+        pattern6()
+    elif patternSelected <= 18:
+        pattern7(count)
+        if count == 0 or count == 2:
+            count = 1
+        else:
+            count = 2
     else:
         pattern3()
         
