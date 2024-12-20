@@ -8,7 +8,8 @@ from neopixel import NeoPixel
 import random
 
 # Total number of LEDs on our LED strip
-num_leds = 50
+num_leds = 50 # leds 5m
+# num_leds = 66 # stars 10m
 LED_GPIO_number = 15
 
 # Define the LED pin number and number of LEDs
@@ -33,6 +34,7 @@ unicorn = 175, 150,255
 bogey = 215, 100, 0
 # our colours
 iceiceblue = 207, 20, 160
+darkpurple = 0, 150, 150
 rose = 50, 185, 21
 boldiceblue = 163, 35, 219
 limegreen = 62, 41, 12
@@ -48,7 +50,12 @@ neongreen = 217, 42, 6
 neonpink = 14, 106, 39
 gold = 215, 255, 0
 silver = 192, 192, 192
+turquoise = 236, 27, 236
 
+pattern4List = [blue, turquoise, green, gold, red, darkpurple]
+pattern5List = [blue, green, red, gold]
+
+numPatterns = 17
 patternSelected = 14
 speed = 0.5
 
@@ -60,7 +67,7 @@ last_press_time = 0  # tracks last valid press time
 # Function to handle button press
 def handle_button():
     global patternSelected
-    if patternSelected < 15:
+    if patternSelected < numPatterns:
         patternSelected += 1
     else:
         patternSelected = 1
@@ -131,6 +138,54 @@ def pattern3():
         
         # Send the data to the strip
         strand.write()
+        
+def pattern4():
+       
+    if num_leds == 66:
+        for led in range(num_leds):
+            if led <11:
+                strand[led] = (pattern4List[0])
+            elif led <22:
+                strand[led] = (pattern4List[1])
+            elif led <33:
+                strand[led] = (pattern4List[2])
+            elif led <44:
+                strand[led] = (pattern4List[3])
+            elif led <55:
+                strand[led] = (pattern4List[4])
+            else:
+                strand[led] = (pattern4List[5])
+    else:
+        for led in range(num_leds):
+            if led <10:
+                strand[led] = (pattern4List[0])
+            elif led <20:
+                strand[led] = (pattern4List[1])
+            elif led <30:
+                strand[led] = (pattern4List[2])
+            elif led <40:
+                strand[led] = (pattern4List[3])
+            else:
+                strand[led] = (pattern4List[4])
+                
+    strand.write()
+    time.sleep(speed)
+    
+def pattern5():
+    
+    for led in range(num_leds):
+
+        if led%4 == 0:
+            strand[led] = (pattern5List[0])
+        elif led%3 == 0:
+            strand[led] = (pattern5List[1])
+        elif led%2 == 0:
+            strand[led] = (pattern5List[2])
+        else:
+            strand[led] = (pattern5List[3])
+                
+    strand.write()
+    time.sleep(speed)
      
 while True:
     
@@ -172,8 +227,15 @@ while True:
         pattern1(jadegreen, purple)
     elif patternSelected <= 14:
         pattern2(speed)
+    elif patternSelected <= 15:
+        pattern4()
+        pattern4List.insert(0, pattern4List.pop(-1))
+    elif patternSelected <= 16:
+        pattern5()
+        pattern5List.insert(0, pattern5List.pop(-1))
     else:
         pattern3()
+        
 
 
         
