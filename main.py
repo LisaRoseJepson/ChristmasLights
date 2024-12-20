@@ -177,10 +177,10 @@ def pattern5(): # RGBY chaser
 
         if led%4 == 0:
             strand[led] = (pattern5List[0])
-        elif led%3 == 0:
-            strand[led] = (pattern5List[1])
         elif led%2 == 0:
             strand[led] = (pattern5List[2])
+        elif (led+1)%4 == 0:
+            strand[led] = (pattern5List[1])
         else:
             strand[led] = (pattern5List[3])
                 
@@ -193,12 +193,12 @@ def pattern6(): # RGBY twinkles
     
     for led in range(num_leds):
 
-        if led % 4 == 0:
+        if led%4 == 0:
             base_colour = pattern5List[0]
-        elif led % 3 == 0:
-            base_colour = pattern5List[1]
-        elif led % 2 == 0:
+        elif led%2 == 0:
             base_colour = pattern5List[2]
+        elif (led+1)%4 == 0:
+            base_colour = pattern5List[1]
         else:
             base_colour = pattern5List[3]
 
@@ -225,12 +225,12 @@ def pattern7(count): # RGBY twinkles - prevents being bright or dim more than tw
         ledBrightness = [0.1 if item == 1 else 1 for item in ledBrightness]
 
     for led in range(num_leds):
-        if led % 4 == 0:
+        if led%4 == 0:
             base_colour = pattern5List[0]
-        elif led % 3 == 0:
-            base_colour = pattern5List[1]
-        elif led % 2 == 0:
+        elif led%2 == 0:
             base_colour = pattern5List[2]
+        elif (led+1)%4 == 0:
+            base_colour = pattern5List[1]
         else:
             base_colour = pattern5List[3]
 
