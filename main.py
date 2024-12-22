@@ -8,8 +8,8 @@ from neopixel import NeoPixel
 import random
 
 # Total number of LEDs on our LED strip
-num_leds = 50 # leds 5m
-# num_leds = 66 # stars 10m
+# num_leds = 50 # leds 5m
+num_leds = 66 # stars 10m
 LED_GPIO_number = 15
 
 # Define the LED pin number and number of LEDs
@@ -58,7 +58,8 @@ count = 0
 ledBrightness = []
 
 numPatterns = 19
-patternSelected = 14
+# patternSelected = 14 # default for strings
+patternSelected = 9 # default for stars
 speed = 0.5
 
 # Global flag to indicate button press
