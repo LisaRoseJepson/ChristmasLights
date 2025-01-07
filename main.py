@@ -57,9 +57,11 @@ pattern5List = [blue, green, red, gold]
 count = 0
 ledBrightness = []
 
-numPatterns = 19
+#numPatterns = 19 # Xmas
+numPatterns = 24 # Static
 # patternSelected = 14 # default for strings
-patternSelected = 9 # default for stars
+# patternSelected = 9 # default for stars
+patternSelected = 19 # default for static stars
 speed = 0.5
 
 # Global flag to indicate button press
@@ -244,6 +246,10 @@ def pattern7(count): # RGBY twinkles - prevents being bright or dim more than tw
     strand.write()
     time.sleep(speed*2)
     
+def pattern8(colour): # static one colour
+    for led in range(num_leds):
+        strand[led] = (colour)
+        strand.write()   
      
 while True:
     
@@ -299,7 +305,20 @@ while True:
             count = 1
         else:
             count = 2
-    else:
+            
+    # static colours
+    elif patternSelected <= 19:
+        pattern8(white)
+    elif patternSelected <= 20:
+        pattern8(silver)
+    elif patternSelected <= 21:
+        pattern8(gold)
+    elif patternSelected <= 22:
+        pattern8(turquoise)
+    elif patternSelected <= 24:
+        pattern8(purple)
+        
+    else: # chasing one colour
         pattern3()
         
 
